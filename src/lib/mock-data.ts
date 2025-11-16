@@ -11,7 +11,8 @@ export const demoDentist: Dentist = {
   city: 'Casablanca',
   phone: '+212 6 12 34 56 78',
   email: 'ahmed.benali@ocliq.ma',
-  photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ahmed',
+  // Use a realistic portrait for demo sharing (LinkedIn-style)
+  photo: 'https://media.licdn.com/dms/image/v2/C5603AQGKiAGKx1XIoQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1549063069279?e=2147483647&v=beta&t=7jtoycg_8WmeKjxzLfZQRPdrWdh0zy5GPPQr--1uq-w',
   bio: 'Spécialiste en orthodontie avec plus de 15 ans d\'expérience. Expert en implants dentaires et traitements esthétiques.',
   workingHours: {
     monday: { start: '09:00', end: '18:00', enabled: true },
@@ -19,7 +20,7 @@ export const demoDentist: Dentist = {
     wednesday: { start: '09:00', end: '18:00', enabled: true },
     thursday: { start: '09:00', end: '18:00', enabled: true },
     friday: { start: '09:00', end: '14:00', enabled: true },
-    saturday: { start: '10:00', end: '16:00', enabled: true },
+  saturday: { start: '10:00', end: '12:00', enabled: true },
     sunday: { start: '10:00', end: '14:00', enabled: false },
   },
   vacationDates: [],
@@ -32,6 +33,29 @@ export const demoDentist: Dentist = {
     { id: 's6', name: 'Soin carie', description: 'Traitement de carie', duration: 45, price: 500 },
   ],
   bookingPageId: 'demo-dentist-1',
+  reviews: [
+    {
+      id: 'r1',
+      name: 'Saliha B.',
+      rating: 5,
+      comment: 'Excellent suivi, très professionnel. Cabinet propre et personnel sympathique.',
+      date: new Date('2024-02-01'),
+    },
+    {
+      id: 'r2',
+      name: 'Youssef A.',
+      rating: 4,
+      comment: 'Soins rapides et efficaces. Je recommande.',
+      date: new Date('2024-03-15'),
+    },
+    {
+      id: 'r3',
+      name: 'Nadia R.',
+      rating: 5,
+      comment: 'Très bonne expérience, je reviendrai pour les contrôles.',
+      date: new Date('2024-04-02'),
+    },
+  ],
 };
 
 export const demoUser: User = {

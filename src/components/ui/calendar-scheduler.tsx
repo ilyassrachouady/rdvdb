@@ -49,6 +49,9 @@ function CalendarScheduler({
   return (
     <div className="w-full">
       <Card className="w-full max-w-4xl shadow-lg border border-gray-200 bg-white">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-semibold text-gray-900">Choisissez une date et une heure</CardTitle>
+        </CardHeader>
         <CardContent className="flex flex-col lg:flex-row gap-6 p-6">
           {/* Calendar Section */}
           <div className="flex-1 border-2 border-gray-100 rounded-xl bg-gray-50/50 overflow-hidden">

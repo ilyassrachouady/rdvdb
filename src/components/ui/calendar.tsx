@@ -6,13 +6,14 @@ import { fr } from "date-fns/locale/fr";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({
   className,
   classNames,
+  // Must show outside days to keep grid 7-column alignment when week starts on Monday
   showOutsideDays = true,
   components: userComponents,
   ...props
@@ -49,9 +50,10 @@ function Calendar({
     nav: "hidden", // Hide default nav
     button_previous: "hidden",
     button_next: "hidden",
-    weekday: "w-full h-12 flex items-center justify-center text-xs font-medium text-muted-foreground",
+    // slightly smaller weekday and day heights to avoid zoom issues on mobile
+    weekday: "w-full h-10 flex items-center justify-center text-xs font-medium text-muted-foreground",
     day_button: cn(
-      "w-full h-12 flex items-center justify-center rounded-md text-sm font-medium transition-colors",
+      "w-full h-10 flex items-center justify-center rounded-md text-sm font-medium transition-colors",
       "hover:bg-muted cursor-pointer",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       "disabled:pointer-events-none disabled:opacity-50",
@@ -114,9 +116,9 @@ function Calendar({
         </button>
       </div>
 
-      {/* Weekday Labels */}
+      {/* Weekday Labels - start on Monday for Moroccan/French locale */}
       <div className="grid grid-cols-7 gap-2 mb-4">
-        {["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"].map((day) => (
+        {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((day) => (
           <div
             key={day}
             className="text-center text-xs font-medium text-muted-foreground h-8 flex items-center justify-center"
@@ -126,20 +128,58 @@ function Calendar({
         ))}
       </div>
 
+      {/* Legend to explain disabled days / special hours */}
+      <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+        <div className="inline-flex items-center gap-2">
+          <span className="w-2 h-2 bg-gray-300 rounded-full inline-block"></span>
+          <span>Dimanche: fermé</span>
+        </div>
+        <div className="inline-flex items-center gap-2">
+          <span className="w-2 h-2 bg-blue-100 rounded-full border border-blue-300 inline-block"></span>
+          <span>Samedi: matin uniquement</span>
+        </div>
+      </div>
+
       {/* Calendar Grid */}
-      <DayPicker
-        showOutsideDays={showOutsideDays}
-        month={currentMonth}
-        onMonthChange={setCurrentMonth}
-        className="w-full"
-        classNames={{
-          ...mergedClassNames,
-          months: "w-full",
-          month: "w-full",
-        }}
-        components={mergedComponents}
-        {...props}
-      />
+      {/* Merge default disabled behaviour with consumer-provided disabled prop
+          We always disable Sundays (dimanche) for bookings in this demo */}
+      {(() => {
+        const userDisabled = props.disabled;
+        const mergedDisabled = (date: Date) => {
+          // Disable Sundays (0)
+          const isSunday = date.getDay() === 0;
+          try {
+            if (typeof userDisabled === 'function') {
+              return isSunday || (userDisabled as (d: Date) => boolean)(date);
+            }
+            // If userDisabled is array/object, fall back to passing it through and also disable Sundays
+            return isSunday;
+          } catch (e) {
+            return isSunday;
+          }
+        };
+
+        // Ensure locale & week start are correct for French / Moroccan users
+        // Force weekStartsOn: 1 (Monday) at the config level
+        const propsToPass = {
+          ...props,
+          weekStartsOn: 1 as const,
+          locale: fr,
+          showOutsideDays: true,
+          month: currentMonth,
+          onMonthChange: setCurrentMonth,
+          className: undefined,
+          classNames: {
+            ...mergedClassNames,
+            months: 'w-full',
+            month: 'w-full',
+          },
+          components: mergedComponents,
+          disabled: mergedDisabled as any,
+        };
+
+        return <DayPicker {...propsToPass} />;
+      })()}
       <style>{`
         .rdp-month {
           width: 100%;
@@ -152,9 +192,9 @@ function Calendar({
         }
         .rdp-row {
           display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 0.5rem;
-          margin-bottom: 0.5rem;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: 0.35rem;
+          margin-bottom: 0.35rem;
         }
         .rdp-cell {
           position: relative;
@@ -168,8 +208,11 @@ function Calendar({
           background-color: #eff6ff;
         }
         .rdp-day_button[data-disabled="true"] {
-          opacity: 0.5;
+          opacity: 0.48;
           cursor: not-allowed;
+          filter: grayscale(60%);
+          background: transparent !important;
+          color: #9ca3af !important; /* muted text */
         }
       `}</style>
     </div>

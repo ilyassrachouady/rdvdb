@@ -1,0 +1,6 @@
+# Vercel deployment files
+dist/
+.env.local
+node_modules/
+.DS_Store
+*.log

@@ -24,6 +24,15 @@ export interface Dentist {
   vacationDates: Date[];
   services: Service[];
   bookingPageId: string;
+  reviews?: Review[];
+}
+
+export interface Review {
+  id: string;
+  name: string;
+  rating: number; // 1-5
+  comment?: string;
+  date: Date;
 }
 
 export interface WorkingHours {
