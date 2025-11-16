@@ -70,15 +70,18 @@ export function AddAppointmentForm({ dentistId, onSuccess }: AddAppointmentFormP
       let patient = patients.find(p => p.phone === patientPhone);
       
       if (!patient) {
-        // In a real app, create patient first
-        patient = {
-          id: `p-${Date.now()}`,
+        patient = await api.createPatient({
+          dentistId,
           name: patientName,
           phone: patientPhone,
           email: patientEmail || undefined,
-          createdAt: new Date(),
-          appointments: [],
-        };
+        });
+      }
+
+      if (!patient) {
+        toast.error('Erreur lors de la création du patient');
+        setIsLoading(false);
+        return;
       }
 
       await api.createAppointment({

@@ -2,19 +2,25 @@ import { useState, useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 import { api } from '@/lib/api';
-import { Dentist, Service } from '@/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { toast } from 'sonner';
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  MapPin,
+  Phone,
+  CheckCircle2,
+  Sparkles,
+  Stethoscope,
+} from 'lucide-react';
+import { demoDentist } from '@/lib/mock-data';
+import { Button } from '@/components/ui/button';
+import { Service } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar } from '@/components/ui/calendar';
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -23,17 +29,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
-import {
-  Calendar as CalendarIcon,
-  Clock,
-  MapPin,
-  Phone,
-  Mail,
-  CheckCircle2,
-  Sparkles,
-  Stethoscope,
-} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function PatientDemoPage() {
@@ -52,8 +47,6 @@ export default function PatientDemoPage() {
   const [patientEmail, setPatientEmail] = useState('');
   const [notes, setNotes] = useState('');
 
-  const dentist = demoDentist;
-
   useEffect(() => {
     if (selectedDate) {
       loadAvailableSlots();
@@ -62,13 +55,13 @@ export default function PatientDemoPage() {
 
   // Pre-load availability for the current month
   useEffect(() => {
-    if (selectedService && dentist) {
+    if (selectedService) {
       loadMonthAvailability();
     }
-  }, [currentMonth, selectedService, dentist]);
+  }, [currentMonth, selectedService]);
 
   const loadMonthAvailability = async () => {
-    if (!dentist || !selectedService) return;
+    if (!demoDentist || !selectedService) return;
     
     const start = startOfMonth(currentMonth);
     const end = endOfMonth(currentMonth);
@@ -82,7 +75,7 @@ export default function PatientDemoPage() {
         if (day < new Date()) return; // Skip past dates
         
         try {
-          const slots = await api.getAvailableSlots(dentist.id, day);
+          const slots = await api.getAvailableSlots(demoDentist.id, day);
           const dayKey = format(day, 'yyyy-MM-dd');
           availabilityMap.set(dayKey, slots.length);
         } catch (error) {
@@ -96,9 +89,9 @@ export default function PatientDemoPage() {
   };
 
   const loadAvailableSlots = async () => {
-    if (!selectedDate || !dentist) return;
+    if (!selectedDate || !demoDentist) return;
     try {
-      const slots = await api.getAvailableSlots(dentist.id, selectedDate);
+      const slots = await api.getAvailableSlots(demoDentist.id, selectedDate);
       setAvailableSlots(slots);
       setSelectedTime('');
       
@@ -115,7 +108,7 @@ export default function PatientDemoPage() {
   };
 
   const handleBooking = async () => {
-    if (!dentist || !selectedDate || !selectedTime || !selectedService || !patientName || !patientPhone) {
+    if (!demoDentist || !selectedDate || !selectedTime || !selectedService || !patientName || !patientPhone) {
       toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
@@ -123,7 +116,7 @@ export default function PatientDemoPage() {
     setIsLoading(true);
     try {
       await api.bookAppointment({
-        dentistId: dentist.id,
+        dentistId: demoDentist.id,
         serviceId: selectedService,
         date: selectedDate.toISOString(),
         time: selectedTime,
@@ -162,7 +155,7 @@ export default function PatientDemoPage() {
     }
   };
 
-  const selectedServiceData = dentist.services.find(s => s.id === selectedService);
+  const selectedServiceData = demoDentist.services.find((s: Service) => s.id === selectedService);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
@@ -187,25 +180,25 @@ export default function PatientDemoPage() {
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
               <Avatar className="h-20 w-20 md:h-24 md:w-24">
-                <AvatarImage src={dentist.photo} />
+                <AvatarImage src={demoDentist.photo} />
                 <AvatarFallback className="text-xl">
-                  {dentist.name.charAt(0)}
+                  {demoDentist.name.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                  <h2 className="text-2xl font-bold text-gray-900">{dentist.name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{demoDentist.name}</h2>
                   <Badge variant="secondary" className="rounded-full">Mode démo</Badge>
                 </div>
-                <p className="text-lg text-blue-600 mb-3">{dentist.specialty}</p>
+                <p className="text-lg text-blue-600 mb-3">{demoDentist.specialty}</p>
                 <div className="flex flex-wrap gap-4 justify-center md:justify-start text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4" />
-                    <span>{dentist.address}, {dentist.city}</span>
+                    <span>{demoDentist.address}, {demoDentist.city}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4" />
-                    <span>{dentist.phone}</span>
+                    <span>{demoDentist.phone}</span>
                   </div>
                 </div>
               </div>
@@ -229,7 +222,7 @@ export default function PatientDemoPage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {dentist.services.map((service) => (
+                  {demoDentist.services.map((service: Service) => (
                     <button
                       key={service.id}
                       onClick={() => setSelectedService(service.id)}

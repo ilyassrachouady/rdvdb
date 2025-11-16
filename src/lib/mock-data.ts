@@ -1,5 +1,5 @@
-import { Dentist, Patient, Appointment, Service, User } from '@/types';
-import { addDays, addHours, setHours, setMinutes } from 'date-fns';
+import { Dentist, Patient, Appointment, User } from '@/types';
+import { addDays, setHours, setMinutes } from 'date-fns';
 
 // Demo Dentist Data
 export const demoDentist: Dentist = {
@@ -92,6 +92,7 @@ const generateTimeSlots = (start: string, end: string, interval: number = 30): s
 export const mockPatients: Patient[] = [
   {
     id: 'p1',
+    dentistId: demoDentist.id,
     name: 'Fatima Alami',
     phone: '+212 6 11 22 33 44',
     email: 'fatima.alami@email.com',
@@ -103,6 +104,7 @@ export const mockPatients: Patient[] = [
   },
   {
     id: 'p2',
+    dentistId: demoDentist.id,
     name: 'Mohammed Idrissi',
     phone: '+212 6 22 33 44 55',
     email: 'm.idrissi@email.com',
@@ -112,6 +114,7 @@ export const mockPatients: Patient[] = [
   },
   {
     id: 'p3',
+    dentistId: demoDentist.id,
     name: 'Aicha Bensaid',
     phone: '+212 6 33 44 55 66',
     tags: ['Régulier'],
@@ -120,6 +123,7 @@ export const mockPatients: Patient[] = [
   },
   {
     id: 'p4',
+    dentistId: demoDentist.id,
     name: 'Youssef Amrani',
     phone: '+212 6 44 55 66 77',
     tags: ['VIP'],

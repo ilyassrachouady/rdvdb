@@ -81,7 +81,6 @@ export default function BookingWizard() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
-  const [dateAvailability, setDateAvailability] = useState<Map<string, { total: number; remaining: number }>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
@@ -135,30 +134,17 @@ export default function BookingWizard() {
     
     // Load availability for next 30 days
     const today = new Date();
-    const availabilityMap = new Map<string, { total: number; remaining: number }>();
-    
     for (let i = 0; i < 30; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       
       try {
-        const slots = await api.getAvailableSlots(dentist.id, date);
-        const timeSlots: TimeSlot[] = slots.map(time => {
-          const capacity = Math.floor(Math.random() * 4) + 3;
-          const remaining = Math.floor(Math.random() * capacity) + 1;
-          return { time, capacity, remaining, isAvailable: remaining > 0 };
-        });
-        
-        const totalCapacity = timeSlots.reduce((sum, slot) => sum + slot.capacity, 0);
-        const totalRemaining = timeSlots.reduce((sum, slot) => sum + slot.remaining, 0);
-        const dateStr = format(date, 'yyyy-MM-dd');
-        availabilityMap.set(dateStr, { total: totalCapacity, remaining: totalRemaining });
+        await api.getAvailableSlots(dentist.id, date);
       } catch (error) {
         // Skip on error
       }
     }
     
-    setDateAvailability(availabilityMap);
   };
 
   const loadTimeSlots = async () => {
@@ -191,15 +177,6 @@ export default function BookingWizard() {
       
       setAvailableSlots(timeSlots);
       
-      // Update date availability
-      const totalCapacity = timeSlots.reduce((sum, slot) => sum + slot.capacity, 0);
-      const totalRemaining = timeSlots.reduce((sum, slot) => sum + slot.remaining, 0);
-      const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      setDateAvailability(prev => {
-        const newMap = new Map(prev);
-        newMap.set(dateStr, { total: totalCapacity, remaining: totalRemaining });
-        return newMap;
-      });
     } catch (error) {
       console.error('Error loading time slots:', error);
       setAvailableSlots([]);

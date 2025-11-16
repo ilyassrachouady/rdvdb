@@ -64,6 +64,7 @@ export interface Appointment {
 
 export interface Patient {
   id: string;
+  dentistId: string;
   name: string;
   phone: string;
   email?: string;

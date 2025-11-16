@@ -49,7 +49,10 @@ export const api = {
 
   updateAppointment: async (id: string, updates: Partial<Appointment>): Promise<Appointment> => {
     await delay(300);
-    const appointments = await api.getAppointments(updates.dentistId || '');
+    if (!updates.dentistId) {
+      throw new Error('Dentist ID is required to update an appointment');
+    }
+    const appointments = await api.getAppointments(updates.dentistId);
     const index = appointments.findIndex(apt => apt.id === id);
     
     if (index === -1) throw new Error('Appointment not found');
@@ -104,11 +107,12 @@ export const api = {
       id: `p-${Date.now()}`,
       createdAt: new Date(),
       appointments: [],
+      dentistId: patient.dentistId,
     };
     
-    const patients = await api.getPatients(dentistId || ""); // This will need dentistId
+    const patients = await api.getPatients(patient.dentistId);
     patients.push(newPatient);
-    storage.setItem(`patients_${patient.id}`, patients);
+    storage.setItem(`patients_${patient.dentistId}`, patients);
     
     return newPatient;
   },
@@ -138,16 +142,18 @@ export const api = {
     let patient = patients.find(p => p.phone === booking.patientPhone);
     
     if (!patient) {
-      patient = {
+      const newPatient: Patient = {
         id: `p-${Date.now()}`,
+        dentistId: booking.dentistId,
         name: booking.patientName,
         phone: booking.patientPhone,
         email: booking.patientEmail,
         createdAt: new Date(),
         appointments: [],
       };
-      patients.push(patient);
+      patients.push(newPatient);
       storage.setItem(`patients_${booking.dentistId}`, patients);
+      patient = newPatient;
     }
     
     // Create appointment

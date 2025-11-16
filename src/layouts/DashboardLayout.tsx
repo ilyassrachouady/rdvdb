@@ -24,9 +24,7 @@ import {
   Settings,
   Menu,
   LogOut,
-  User,
   Sparkles,
-  X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
