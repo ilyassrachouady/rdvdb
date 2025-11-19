@@ -125,22 +125,22 @@ export default function DashboardHome() {
       confirmed: {
         icon: <CheckCircle2 className="h-3 w-3" />,
         label: 'Confirmé',
-        className: 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg border-0 rounded-full px-2 py-1 text-xs font-semibold'
+        className: 'badge-completed'
       },
       pending: {
         icon: <Timer className="h-3 w-3" />,
         label: 'En attente',
-        className: 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg border-0 rounded-full px-2 py-1 text-xs font-semibold'
+        className: 'badge-pending'
       },
       completed: {
         icon: <CheckCircle2 className="h-3 w-3" />,
         label: 'Terminé',
-        className: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg border-0 rounded-full px-2 py-1 text-xs font-semibold'
+        className: 'badge-scheduled'
       },
       cancelled: {
         icon: <XCircle className="h-3 w-3" />,
         label: 'Annulé',
-        className: 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg border-0 rounded-full px-2 py-1 text-xs font-semibold'
+        className: 'badge-cancelled'
       },
     };
     
@@ -169,37 +169,37 @@ export default function DashboardHome() {
   }
 
   return (
-    <div className="space-y-6 p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
+    <div className="space-y-4 lg:space-y-6">
       {/* Hero Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-6 text-white overflow-hidden">
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-white overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
           
           <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Stethoscope className="h-8 w-8 text-white" />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 xl:w-16 xl:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <Stethoscope className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
                     {getTimeOfDay()}, Dr. {dentist?.name?.split(' ')[0]}
                   </h1>
-                  <p className="text-blue-100 mt-2 text-lg lg:text-xl font-medium">
+                  <p className="text-blue-100 mt-3 text-lg sm:text-xl font-medium leading-relaxed">
                     Tableau de bord professionnel • {format(new Date(), 'EEEE d MMMM yyyy', { locale: fr })}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 text-blue-100">
+              <div className="flex flex-wrap items-center gap-2 md:gap-4 xl:gap-6 text-blue-100 text-xs md:text-sm xl:text-base">
                 <div className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-300" />
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-red-300" />
                   <span className="font-medium">Votre cabinet dental</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-green-300" />
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-300" />
                   <span className="font-medium">Soins de qualité</span>
                 </div>
               </div>
@@ -213,22 +213,24 @@ export default function DashboardHome() {
                     Nouveau RDV
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-slate-900">Nouveau rendez-vous</DialogTitle>
-                    <DialogDescription className="text-slate-600">
-                      Créez un nouveau rendez-vous pour un patient
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="w-full">
-                    <QuizStyleBooking 
-                      onSuccess={() => {
-                        setShowAddDialog(false);
-                        loadAppointments();
-                        toast.success('Rendez-vous créé avec succès!');
-                      }}
-                      onCancel={() => setShowAddDialog(false)}
-                    />
+                <DialogContent className="booking-dialog-zoom-resistant overflow-hidden border-0 shadow-2xl p-0 max-w-[95vw] w-[95vw] max-h-[85vh]">
+                  <div className="flex flex-col h-full">
+                    <DialogHeader className="p-3 pb-2 border-b border-slate-200 flex-shrink-0">
+                      <DialogTitle className="text-base font-bold text-slate-900">Nouveau rendez-vous</DialogTitle>
+                      <DialogDescription className="text-xs text-slate-600">
+                        Création rapide
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex-1 overflow-y-auto">
+                      <QuizStyleBooking 
+                        onSuccess={() => {
+                          setShowAddDialog(false);
+                          loadAppointments();
+                          toast.success('Rendez-vous créé avec succès!');
+                        }}
+                        onCancel={() => setShowAddDialog(false)}
+                      />
+                    </div>
                   </div>
                 </DialogContent>
               </Dialog>
@@ -238,12 +240,12 @@ export default function DashboardHome() {
       </div>
 
       {/* Beautiful Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         <Card 
-          className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
+          className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/appointments')}
         >
-          <CardContent className="p-6">
+          <CardContent className="p-4 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Rendez-vous</p>
@@ -258,7 +260,7 @@ export default function DashboardHome() {
                 </p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
-                <Calendar className="h-7 w-7 text-white" />
+                <Calendar className="h-4 w-4 md:h-5 md:w-5 xl:h-7 xl:w-7 text-white" />
               </div>
             </div>
             <div className="mt-4 flex items-center text-blue-600">
@@ -272,7 +274,7 @@ export default function DashboardHome() {
           className="border-0 shadow-lg bg-gradient-to-br from-white to-teal-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/patients')}
         >
-          <CardContent className="p-6">
+          <CardContent className="p-4 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Patients actifs</p>
@@ -288,7 +290,7 @@ export default function DashboardHome() {
                   Base de données complète
                 </p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-teal-600 to-teal-700 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
                 <Users className="h-7 w-7 text-white" />
               </div>
             </div>
@@ -299,15 +301,15 @@ export default function DashboardHome() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-emerald-50/30 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Revenus</p>
                 <p className="text-3xl font-bold text-slate-900">{monthlyStats.revenue.toLocaleString()}</p>
-                <p className="text-xs text-green-600 font-medium mt-1">MAD ce mois</p>
+                <p className="text-xs text-emerald-700 font-medium mt-1">MAD ce mois</p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
                 <DollarSign className="h-7 w-7 text-white" />
               </div>
             </div>
@@ -318,7 +320,7 @@ export default function DashboardHome() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50/30 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -326,13 +328,13 @@ export default function DashboardHome() {
                 <p className="text-3xl font-bold text-slate-900">
                   {Math.round((monthlyStats.completedAppointments / Math.max(monthlyStats.totalAppointments, 1)) * 100)}%
                 </p>
-                <p className="text-xs text-purple-600 font-medium mt-1">Rendez-vous complétés</p>
+                <p className="text-xs text-slate-600 font-medium mt-1">Rendez-vous complétés</p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all">
                 <TrendingUp className="h-7 w-7 text-white" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-purple-600">
+            <div className="mt-4 flex items-center text-blue-600">
               <Activity className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
               <span className="text-sm font-semibold">Efficacité clinique</span>
             </div>
@@ -341,11 +343,11 @@ export default function DashboardHome() {
       </div>
 
       {/* Modern Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
         {/* Today's Schedule */}
-        <div className="xl:col-span-8">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-5 border-b-0">
+        <div className="lg:col-span-8">
+          <Card className="border-0 shadow-xl bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-4 border-b-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center">
@@ -397,7 +399,7 @@ export default function DashboardHome() {
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
+                              <div className="flex items-center gap-2 bg-gradient-to-r from-slate-600 to-slate-700 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
                                 <Clock className="w-4 h-4" />
                                 {appointment.time}
                               </div>
@@ -439,12 +441,12 @@ export default function DashboardHome() {
         </div>
 
         {/* Modern Sidebar */}
-        <div className="xl:col-span-4 space-y-5">
+        <div className="lg:col-span-4 space-y-4 lg:space-y-6">
           {/* Quick Actions */}
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-4 border-b-0">
+          <Card className="border-0 shadow-xl bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-slate-50/50 to-slate-50/30 p-4 border-b-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center">
                   <Activity className="w-5 h-5 text-white" />
                 </div>
                 <CardTitle className="text-xl font-bold text-slate-900">Actions rapides</CardTitle>
@@ -460,16 +462,16 @@ export default function DashboardHome() {
               </Button>
               <Button
                 onClick={() => navigate('/dashboard/appointments')}
-                className="w-full justify-start h-10 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full justify-start h-10 bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <Calendar className="w-4 h-4 mr-3 text-blue-600" />
                 Consulter l'agenda
               </Button>
               <Button
                 onClick={() => setShowAddDialog(true)}
-                className="w-full justify-start h-10 bg-gradient-to-r from-green-50 to-teal-50 hover:from-green-100 hover:to-teal-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full justify-start h-10 bg-gradient-to-r from-emerald-50 to-emerald-100 hover:from-emerald-100 hover:to-emerald-200 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                <Plus className="w-4 h-4 mr-3 text-green-600" />
+                <Plus className="w-4 h-4 mr-3 text-emerald-600" />
                 Nouveau rendez-vous
               </Button>
             </CardContent>
@@ -477,10 +479,10 @@ export default function DashboardHome() {
 
           {/* Upcoming Appointments */}
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-6 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-slate-50/50 to-slate-100/30 p-6 border-b-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-700 rounded-2xl flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -488,7 +490,7 @@ export default function DashboardHome() {
                     <p className="text-slate-600">Cette semaine</p>
                   </div>
                 </div>
-                <Badge className="bg-gradient-to-r from-orange-500 to-yellow-600 text-white rounded-full px-3 py-1 font-semibold">
+                <Badge className="bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-full px-3 py-1 font-semibold">
                   {upcomingAppointments.length}
                 </Badge>
               </div>
@@ -513,7 +515,7 @@ export default function DashboardHome() {
                         onClick={() => navigate('/dashboard/appointments')}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                          <div className="h-10 w-10 bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl flex items-center justify-center text-white font-bold text-sm">
                             {patient?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || '?'}
                           </div>
                           <div>

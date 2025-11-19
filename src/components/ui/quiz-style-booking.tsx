@@ -253,7 +253,7 @@ export default function QuizStyleBooking({
     return (
       <div className={cn("w-full max-w-4xl mx-auto", className)}>
         <Card className="border-0 shadow-xl bg-white overflow-hidden">
-          <CardContent className="p-12">
+          <CardContent className="p-4 sm:p-6">
             {/* Success Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 text-green-600 rounded-full mb-6 animate-bounce">
@@ -393,30 +393,30 @@ export default function QuizStyleBooking({
   }
 
   return (
-    <div className={cn("w-full max-w-7xl mx-auto px-4", className)}>
+    <div className={cn("w-full min-w-[1000px] h-auto flex flex-col p-4", className)}>
       <Card className="border-0 shadow-2xl bg-white overflow-hidden">
         {/* Compact Progress Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+        <div className="bg-gradient-to-r from-teal-500 to-blue-600 px-4 py-2 flex-shrink-0">
           <div className="flex items-center justify-between">
             {/* Progress Steps */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               {STEPS.map((step, index) => (
                 <div key={step.id} className="flex items-center">
                   <div className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
+                    "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all",
                     index + 1 < currentStep ? "bg-white text-teal-600" :
                     index + 1 === currentStep ? "bg-white text-teal-600" :
                     "bg-teal-500 text-teal-100"
                   )}>
                     {index + 1 < currentStep ? (
-                      <Check className="w-4 h-4" />
+                      <Check className="w-3 h-3" />
                     ) : (
                       index + 1
                     )}
                   </div>
                   {index < STEPS.length - 1 && (
                     <div className={cn(
-                      "w-12 h-0.5 mx-3",
+                      "w-8 h-0.5 mx-2",
                       index + 1 < currentStep ? "bg-white" : "bg-teal-400"
                     )} />
                   )}
@@ -481,17 +481,17 @@ export default function QuizStyleBooking({
 
           {/* Step 2: Date & Time Selection */}
           {currentStep === 2 && (
-            <div className="h-[60vh] overflow-auto">
+            <div className="h-full overflow-auto">
               {booking.service && (
-                <div className="mb-4 flex items-center justify-center">
-                  <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                    <Stethoscope className="w-4 h-4 text-blue-600" />
-                    <span className="text-blue-800 font-medium">{booking.service.name}</span>
+                <div className="mb-2 flex items-center justify-center">
+                  <div className="inline-flex items-center gap-2 bg-teal-50 px-3 py-1 rounded-full">
+                    <Stethoscope className="w-3 h-3 text-teal-600" />
+                    <span className="text-teal-800 font-medium text-sm">{booking.service.name}</span>
                   </div>
                 </div>
               )}
 
-              <div className="w-full">
+              <div className="w-full max-h-[350px] overflow-hidden">
                 <CalendarScheduler
                   timeSlots={availableSlots.map(s => s.time)}
                   disabledDates={(date) => {
@@ -513,10 +513,10 @@ export default function QuizStyleBooking({
               </div>
 
               {booking.date && booking.timeSlot && (
-                <div className="mt-4 text-center">
-                  <div className="inline-flex items-center gap-2 bg-green-50 px-6 py-3 rounded-full border-2 border-green-200">
-                    <Check className="w-5 h-5 text-green-600" />
-                    <span className="text-green-800 font-medium">
+                <div className="mt-2 text-center">
+                  <div className="inline-flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full border border-green-200">
+                    <Check className="w-4 h-4 text-green-600" />
+                    <span className="text-green-800 font-medium text-sm">
                       {format(booking.date, 'EEEE d MMMM', { locale: fr })} à {booking.timeSlot.time}
                     </span>
                   </div>
@@ -527,9 +527,9 @@ export default function QuizStyleBooking({
 
           {/* Step 3: Patient Details */}
           {currentStep === 3 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[60vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
               {/* Form Column */}
-              <div className="lg:col-span-2 space-y-4">
+              <div className="lg:col-span-2 space-y-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name" className="flex items-center gap-2">
@@ -612,7 +612,7 @@ export default function QuizStyleBooking({
                 {/* Selection Preview */}
                 {(booking.service || booking.date || booking.timeSlot) && (
                   <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-                    <CardContent className="p-6">
+                    <CardContent className="p-3 sm:p-4">
                       <h3 className="font-semibold text-blue-900 mb-4">Votre sélection</h3>
                       <div className="space-y-3">
                         {booking.service && (
@@ -728,41 +728,45 @@ export default function QuizStyleBooking({
 
         {/* Navigation Footer */}
         {currentStep < 4 && (
-          <div className="border-t-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-8 py-6 rounded-b-3xl">
-            <div className="flex justify-between items-center">
+          <div className="border-t bg-slate-100/50 px-2 sm:px-3 py-2 flex-shrink-0">
+            <div className="flex justify-between items-center gap-2 sm:gap-3">
               <Button
                 onClick={handleBack}
                 variant="outline"
-                className="rounded-2xl h-12 px-8 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-lg hover:shadow-xl transition-all font-semibold"
+                className="rounded-lg h-8 sm:h-9 px-3 sm:px-4 bg-white hover:bg-gray-50 border-gray-200 font-medium text-xs sm:text-sm"
                 disabled={currentStep === 1}
               >
-                <ArrowLeft className="w-5 w-5 mr-3" />
-                Retour
+                <ArrowLeft className="w-3 sm:w-4 h-3 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Retour</span>
+                <span className="sm:hidden">←</span>
               </Button>
 
               <Button
                 onClick={handleNext}
                 disabled={!canProceedToNext()}
-                className="rounded-2xl h-12 px-8 bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 font-bold text-lg"
+                className="rounded-lg h-8 sm:h-9 px-3 sm:px-4 bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 font-medium text-xs sm:text-sm"
               >
-                {currentStep === 1 && 'Continuer'}
-                {currentStep === 2 && 'Continuer'}
-                {currentStep === 3 && 'Vers la confirmation'}
-                <ArrowRight className="w-5 h-5 ml-3" />
+                <span className="hidden sm:inline">
+                  {currentStep === 1 && 'Continuer'}
+                  {currentStep === 2 && 'Continuer'}
+                  {currentStep === 3 && 'Confirmer'}
+                </span>
+                <span className="sm:hidden">→</span>
+                <ArrowRight className="w-3 sm:w-4 h-3 sm:h-4 ml-1" />
               </Button>
             </div>
           </div>
         )}
         
         {currentStep === 4 && onCancel && (
-          <div className="border-t-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-8 py-6 rounded-b-3xl">
+          <div className="border-t bg-slate-100/50 px-3 py-3 flex-shrink-0">
             <div className="flex justify-center">
               <Button
                 onClick={onCancel}
                 variant="outline"
-                className="rounded-2xl h-12 px-8 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-lg hover:shadow-xl transition-all font-semibold"
+                className="rounded-lg h-9 px-6 bg-white hover:bg-gray-50 border-gray-200 font-medium text-sm"
               >
-                Annuler
+                Fermer
               </Button>
             </div>
           </div>

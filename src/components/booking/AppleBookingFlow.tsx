@@ -7,7 +7,6 @@ import { Service } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { ModernButton } from '@/components/ui/modern-button';
 import { toast } from 'sonner';
 import {
@@ -16,11 +15,7 @@ import {
   User,
   CheckCircle2,
   Stethoscope,
-  ChevronRight,
-  Star,
   Check,
-  Phone,
-  Mail,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

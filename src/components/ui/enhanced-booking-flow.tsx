@@ -17,14 +17,8 @@ import {
   Calendar as CalendarIcon,
   User,
   CheckCircle2,
-  Sparkles,
   Stethoscope,
   Check,
-  Clock,
-  ArrowRight,
-  Star,
-  Phone,
-  Mail,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -433,7 +427,6 @@ export default function EnhancedBookingFlow({
                       if (slot) handleTimeSlotSelect(slot);
                     }
                   }}
-                  compact={true}
                 />
               </div>
             ) : booking.timeSlot ? (

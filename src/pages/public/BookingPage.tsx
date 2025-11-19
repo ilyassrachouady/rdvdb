@@ -142,7 +142,7 @@ export default function BookingPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="container mx-auto max-w-screen-2xl min-h-screen bg-slate-50 py-6 px-4">
       <div className="max-w-6xl mx-auto">
         {/* PREMIUM DENTIST HERO CARD */}
         <div className="relative mb-8 overflow-hidden rounded-3xl shadow-2xl border-0">

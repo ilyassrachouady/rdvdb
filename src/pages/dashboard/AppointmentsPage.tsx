@@ -135,7 +135,7 @@ function ModernCalendar({ appointments, onDateSelect, selectedDate }: ModernCale
                 "h-12 rounded-2xl font-semibold text-sm transition-all duration-300 relative group",
                 isCurrentMonth ? "text-slate-900" : "text-slate-400",
                 isSelected && "bg-gradient-to-br from-blue-500 to-teal-600 text-white shadow-xl ring-4 ring-blue-200 transform scale-110",
-                !isSelected && isToday && "bg-gradient-to-br from-orange-400 to-orange-500 text-white shadow-lg ring-2 ring-orange-200",
+                !isSelected && isToday && "bg-gradient-to-br from-blue-400 to-blue-500 text-white shadow-lg ring-2 ring-blue-200",
                 !isSelected && !isToday && hasAppointments && isCurrentMonth && "bg-gradient-to-br from-green-400 to-teal-500 text-white shadow-lg hover:shadow-xl hover:scale-105",
                 !isSelected && !isToday && !hasAppointments && isCurrentMonth && !isPastDate && "bg-white/60 backdrop-blur-sm hover:bg-white/80 text-slate-700 shadow-sm hover:shadow-lg hover:scale-105",
                 isPastDate && !isToday && "opacity-40 cursor-not-allowed",
@@ -165,7 +165,7 @@ function ModernCalendar({ appointments, onDateSelect, selectedDate }: ModernCale
       {/* Legend */}
       <div className="flex flex-wrap gap-4 text-xs">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500"></div>
+          <div className="w-4 h-4 rounded-lg bg-gradient-to-br from-blue-400 to-blue-500"></div>
           <span className="text-slate-600 font-medium">Aujourd'hui</span>
         </div>
         <div className="flex items-center gap-2">
@@ -308,7 +308,7 @@ export default function AppointmentsPage() {
   const confirmedToday = todayAppointments.filter(apt => apt.status === 'confirmed');
 
   return (
-    <div className="space-y-6 p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
+    <div className="container mx-auto max-w-screen-2xl space-y-6 p-4 md:p-6 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
       {/* Hero Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
@@ -346,7 +346,7 @@ export default function AppointmentsPage() {
                     Nouveau RDV
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl">
+                <DialogContent className="booking-dialog-zoom-resistant overflow-hidden border-0 shadow-2xl p-0 max-w-[95vw] w-[95vw] max-h-[85vh]">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-slate-900">Nouveau rendez-vous</DialogTitle>
                     <DialogDescription className="text-slate-600">
@@ -423,17 +423,17 @@ export default function AppointmentsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/50 hover:shadow-xl transition-all duration-300">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/50 hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Total RDV</p>
                 <p className="text-3xl font-bold text-slate-900">{appointments.length}</p>
-                <p className="text-xs text-purple-600 font-medium mt-1">
+                <p className="text-xs text-blue-600 font-medium mt-1">
                   Tous les temps
                 </p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
                 <TrendingUp className="h-7 w-7 text-white" />
               </div>
             </div>

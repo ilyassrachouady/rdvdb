@@ -277,8 +277,8 @@ export default function BookingWizard() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-teal-500/10 to-blue-500/10 rounded-full -translate-y-48 translate-x-48"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-teal-500/10 rounded-full translate-y-40 -translate-x-40"></div>
       
-      <div className="relative py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+      <div className="relative py-8 px-4 lg:px-6">
+        <div className="container mx-auto max-w-screen-xl">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl mb-4 shadow-xl">
@@ -288,7 +288,7 @@ export default function BookingWizard() {
             <p className="text-slate-600 font-medium">Simple, rapide et sans surprises</p>
           </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Left: Dentist Info & Summary */}
           <div className="md:col-span-1 space-y-8">
             {/* Dentist Info Card */}
@@ -412,9 +412,9 @@ export default function BookingWizard() {
           </div>
 
           {/* Right: Active Step Content */}
-          <div className="md:col-span-2">
-            <Card className="shadow-xl border-slate-200/50 bg-white/80 backdrop-blur-sm rounded-2xl min-h-[600px]">
-              <CardContent className="p-8">
+          <div className="lg:col-span-2">
+            <Card className="shadow-xl border-slate-200/50 bg-white/80 backdrop-blur-sm rounded-2xl min-h-[500px] lg:min-h-[600px]">
+              <CardContent className="p-6 lg:p-8">
                 {/* Back button when not on first step */}
                 {currentStep > 1 && (
                   <div className="mb-4">

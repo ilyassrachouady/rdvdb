@@ -8,7 +8,6 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import BookingPage from './pages/public/BookingPage';
 import BookingWizard from './pages/public/BookingWizard';
 import EnhancedBookingDemo from './pages/public/EnhancedBookingDemo';
-import DentistLandingPage from './pages/public/DentistLandingPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardHome from './pages/dashboard/DashboardHome';
 import PatientsPage from './pages/dashboard/PatientsPage';
@@ -50,7 +49,6 @@ function AppRoutes() {
       <Route path="/forgot-password" element={<ViewportScaler><ForgotPasswordPage /></ViewportScaler>} />
       <Route path="/dentist/:id" element={<ViewportScaler><BookingPage /></ViewportScaler>} />
       <Route path="/demo" element={<ViewportScaler><EnhancedBookingDemo /></ViewportScaler>} />
-      <Route path="/landing/dr-yassine-el-amrani" element={<ViewportScaler><DentistLandingPage /></ViewportScaler>} />
       <Route path="/demo-old" element={<ViewportScaler><BookingWizard /></ViewportScaler>} />
       <Route path="/book" element={<ViewportScaler><BookingWizard /></ViewportScaler>} />
       <Route path="/wizard" element={<ViewportScaler><BookingWizard /></ViewportScaler>} />

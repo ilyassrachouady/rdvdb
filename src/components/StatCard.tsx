@@ -16,14 +16,14 @@ export function StatCard({ title, value, icon: Icon, trend, trendValue, classNam
     <Card className={cn("border-0 shadow-lg", className)}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <div className="space-y-1">
+            <p className="text-base font-medium text-neutral-600 min-readable">{title}</p>
+            <p className="text-3xl font-bold text-neutral-900 leading-tight">{value}</p>
             {trendValue && (
               <p className={cn(
-                "text-xs mt-1",
-                trend === 'up' ? 'text-green-600' :
-                trend === 'down' ? 'text-red-600' : 'text-gray-500'
+                "text-sm font-medium min-readable",
+                trend === 'up' ? 'text-emerald-700' :
+                trend === 'down' ? 'text-orange-700' : 'text-neutral-600'
               )}>
                 {trendValue}
               </p>
@@ -31,8 +31,8 @@ export function StatCard({ title, value, icon: Icon, trend, trendValue, classNam
           </div>
           <div className={cn(
             "p-3 rounded-full",
-            trend === 'up' ? 'bg-green-100 text-green-600' :
-            trend === 'down' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+            trend === 'up' ? 'bg-emerald-50 text-emerald-700' :
+            trend === 'down' ? 'bg-orange-50 text-orange-700' : 'bg-slate-100 text-slate-700'
           )}>
             <Icon className="w-6 h-6" />
           </div>

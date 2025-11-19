@@ -53,7 +53,7 @@ export default function LoginPage() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-teal-500/10 to-blue-500/10 rounded-full -translate-y-48 translate-x-48"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-teal-500/10 rounded-full translate-y-40 -translate-x-40"></div>
       
-      <div className="relative flex items-center justify-center min-h-screen p-4">
+      <div className="relative flex items-center justify-center min-h-screen p-2 md:p-4">
         <div className="w-full max-w-md">
           {/* Compact Brand Header */}
           <div className="text-center mb-6">

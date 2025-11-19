@@ -43,6 +43,11 @@ export default function SettingsPage() {
   const [formData, setFormData] = useState<Partial<Dentist>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [bookingUrl, setBookingUrl] = useState('');
+  const [bookingSettings, setBookingSettings] = useState({
+    showPrices: true,
+    showCNSSPrices: true,
+    requireCNSSSelection: false,
+  });
 
   useEffect(() => {
     if (dentist) {
@@ -164,154 +169,127 @@ export default function SettingsPage() {
 
         {/* Clinic Info */}
         <TabsContent value="clinic" className="space-y-6">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-8 border-b-0">
+          <Card className="border-0 shadow-xl bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6 border-b border-slate-100">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold text-slate-900">
-                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Building2 className="h-6 w-6 text-white" />
+                <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Building2 className="h-5 w-5 text-white" />
                 </div>
                 Informations du cabinet
               </CardTitle>
-              <CardDescription className="text-slate-600 text-lg mt-2">
+              <CardDescription className="text-slate-600 mt-1">
                 Informations publiques affichées sur votre page de réservation
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-5 space-y-6">
-              {/* Profile Header with Logo Section */}
-              <div className="flex flex-col lg:flex-row gap-6">
-                {/* Logo/Avatar Section */}
-                <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-indigo-50/30 rounded-2xl p-6 lg:w-80">
-                  <div className="text-center space-y-4">
-                    <div className="relative">
-                      <div className="w-24 h-24 mx-auto bg-gradient-to-br from-teal-500 to-blue-600 rounded-full flex items-center justify-center shadow-xl">
-                        <User className="h-12 w-12 text-white" />
-                      </div>
-                      <Button 
-                        size="sm" 
-                        className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-white shadow-lg hover:shadow-xl p-0"
-                      >
-                        <User className="h-4 w-4 text-slate-600" />
-                      </Button>
+            <CardContent className="p-6">
+              {/* Profile Section */}
+              <div className="flex items-start gap-6 mb-8">
+                <div className="flex-shrink-0">
+                  <div className="relative">
+                    <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <User className="h-10 w-10 text-white" />
                     </div>
-                    <div>
-                      <h3 className="font-bold text-slate-900 text-lg">{formData.name || 'Dr. Nom du Praticien'}</h3>
-                      <p className="text-slate-600">{formData.specialty || 'Chirurgien-dentiste'}</p>
-                    </div>
-                    <Button variant="outline" size="sm" className="w-full rounded-2xl">
-                      Changer la photo
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg p-0 bg-white border-2 border-white shadow-md hover:shadow-lg"
+                    >
+                      <User className="h-3 w-3 text-slate-600" />
                     </Button>
                   </div>
-                </Card>
-
-                {/* Basic Info */}
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-4">
-                    <div className="space-y-3">
-                      <Label htmlFor="clinic-name" className="text-sm font-bold text-slate-700 block">Nom complet *</Label>
-                      <Input
-                        id="clinic-name"
-                        value={formData.name || ''}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="h-12 rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                        placeholder="Dr. Jean Dupont"
-                        required
-                        aria-describedby="clinic-name-help"
-                      />
-                      <p id="clinic-name-help" className="text-xs text-slate-500">Votre nom complet tel qu'affiché aux patients</p>
-                    </div>
-                  </Card>
-
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-teal-50/30 rounded-2xl p-4">
-                    <div className="space-y-3">
-                      <Label htmlFor="clinic-specialty" className="text-sm font-bold text-slate-700 block">Spécialité *</Label>
-                      <Input
-                        id="clinic-specialty"
-                        value={formData.specialty || ''}
-                        onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
-                        className="h-12 rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                        placeholder="Chirurgien-dentiste"
-                        required
-                        aria-describedby="clinic-specialty-help"
-                      />
-                      <p id="clinic-specialty-help" className="text-xs text-slate-500">Votre domaine de spécialisation</p>
-                    </div>
-                  </Card>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">{formData.name || 'Dr. Nom du Praticien'}</h3>
+                  <p className="text-slate-600 mb-3">{formData.specialty || 'Chirurgien-dentiste'}</p>
+                  <Button variant="outline" size="sm" className="rounded-lg">
+                    Changer la photo
+                  </Button>
                 </div>
               </div>
 
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/30 rounded-2xl p-4">
-                <div className="space-y-3">
-                  <Label htmlFor="clinic-address" className="text-sm font-bold text-slate-700 block">Adresse du cabinet</Label>
+              {/* Form Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-name" className="text-sm font-semibold text-slate-700">Nom complet *</Label>
+                  <Input
+                    id="clinic-name"
+                    value={formData.name || ''}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="h-11 rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500"
+                    placeholder="Dr. Jean Dupont"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-specialty" className="text-sm font-semibold text-slate-700">Spécialité *</Label>
+                  <Input
+                    id="clinic-specialty"
+                    value={formData.specialty || ''}
+                    onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
+                    className="h-11 rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500"
+                    placeholder="Chirurgien-dentiste"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="clinic-address" className="text-sm font-semibold text-slate-700">Adresse du cabinet</Label>
                   <Input
                     id="clinic-address"
                     value={formData.address || ''}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="h-12 rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                    className="h-11 rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500"
                     placeholder="123 Rue de la Paix"
-                    aria-describedby="clinic-address-help"
                   />
-                  <p id="clinic-address-help" className="text-xs text-slate-500">Adresse complète de votre cabinet dentaire</p>
                 </div>
-              </Card>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/30 rounded-2xl p-4">
-                  <div className="space-y-3">
-                    <Label htmlFor="clinic-city" className="text-sm font-bold text-slate-700 block">Ville</Label>
-                    <Input
-                      id="clinic-city"
-                      value={formData.city || ''}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="h-12 rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                      placeholder="Casablanca"
-                      aria-describedby="clinic-city-help"
-                    />
-                    <p id="clinic-city-help" className="text-xs text-slate-500">Ville où se trouve votre cabinet</p>
-                  </div>
-                </Card>
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-city" className="text-sm font-semibold text-slate-700">Ville</Label>
+                  <Input
+                    id="clinic-city"
+                    value={formData.city || ''}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    className="h-11 rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500"
+                    placeholder="Casablanca"
+                  />
+                </div>
 
-                <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 rounded-2xl p-4">
-                  <div className="space-y-3">
-                    <Label htmlFor="clinic-phone" className="text-sm font-bold text-slate-700 block">Téléphone *</Label>
-                    <Input
-                      id="clinic-phone"
-                      type="tel"
-                      value={formData.phone || ''}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="h-12 rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                      placeholder="+212 6 00 00 00 00"
-                      required
-                      aria-describedby="clinic-phone-help"
-                    />
-                    <p id="clinic-phone-help" className="text-xs text-slate-500">Numéro de contact principal</p>
-                  </div>
-                </Card>
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-phone" className="text-sm font-semibold text-slate-700">Téléphone *</Label>
+                  <Input
+                    id="clinic-phone"
+                    type="tel"
+                    value={formData.phone || ''}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="h-11 rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500"
+                    placeholder="+212 6 00 00 00 00"
+                    required
+                  />
+                </div>
 
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-indigo-50/30 rounded-2xl p-4">
-                <div className="space-y-3">
-                  <Label htmlFor="clinic-bio" className="text-sm font-bold text-slate-700 block">Description du cabinet</Label>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="clinic-bio" className="text-sm font-semibold text-slate-700">Description du cabinet</Label>
                   <Textarea
                     id="clinic-bio"
                     value={formData.bio || ''}
                     onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    className="rounded-2xl border-0 bg-white shadow-lg focus:shadow-xl font-medium transition-all resize-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 min-h-[100px]"
+                    className="rounded-lg border-slate-200 focus:border-teal-500 focus:ring-teal-500 resize-none min-h-[100px]"
                     rows={4}
                     placeholder="Décrivez votre cabinet, vos spécialités et votre approche des soins dentaires..."
-                    aria-describedby="clinic-bio-help"
                   />
-                  <p id="clinic-bio-help" className="text-xs text-slate-500">Cette description sera visible par vos patients sur la page de réservation</p>
+                  <p className="text-xs text-slate-500">Cette description sera visible par vos patients</p>
                 </div>
-              </Card>
+              </div>
 
-              <div className="flex justify-center pt-4">
+              <div className="flex justify-end pt-6 border-t border-slate-100 mt-8">
                 <Button 
                   onClick={handleSave} 
                   disabled={isSaving}
-                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-2xl px-8 py-3 h-auto font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
+                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-lg px-6 py-2 font-semibold shadow-md hover:shadow-lg transition-all"
                 >
-                  <CheckCircle2 className="mr-2 h-5 w-5" />
-                  {isSaving ? 'Sauvegarde en cours...' : 'Enregistrer les modifications'}
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  {isSaving ? 'Sauvegarde...' : 'Enregistrer'}
                 </Button>
               </div>
             </CardContent>
@@ -486,12 +464,174 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
 
+        {/* Booking Settings */}
+        <TabsContent value="booking" className="space-y-6">
+          <Card className="border-0 shadow-xl bg-white rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6 border-b border-slate-100">
+              <CardTitle className="flex items-center gap-3 text-2xl font-bold text-slate-900">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Settings className="h-5 w-5 text-white" />
+                </div>
+                Paramètres de réservation
+              </CardTitle>
+              <CardDescription className="text-slate-600 mt-1">
+                Contrôlez l'affichage des prix et services lors de la prise de rendez-vous
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-8">
+                {/* Price Display Settings */}
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-2">
+                    Affichage des prix
+                  </h3>
+                  
+                  <div className="grid gap-6">
+                    {/* Show Prices Toggle */}
+                    <Card className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 pr-4">
+                          <Label htmlFor="show-prices" className="text-base font-semibold text-slate-900 cursor-pointer flex items-center gap-2">
+                            <Stethoscope className="h-4 w-4 text-teal-600" />
+                            Afficher les prix des services
+                          </Label>
+                          <p className="text-sm text-slate-600 mt-1">
+                            Les patients pourront voir le prix de chaque service lors de la réservation
+                          </p>
+                        </div>
+                        <Switch
+                          id="show-prices"
+                          checked={bookingSettings.showPrices}
+                          onCheckedChange={(checked) => 
+                            setBookingSettings(prev => ({ ...prev, showPrices: checked }))
+                          }
+                          className="data-[state=checked]:bg-teal-500"
+                        />
+                      </div>
+                    </Card>
+
+                    {/* CNSS Prices Toggle */}
+                    {bookingSettings.showPrices && (
+                      <Card className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 pr-4">
+                            <Label htmlFor="show-cnss-prices" className="text-base font-semibold text-slate-900 cursor-pointer flex items-center gap-2">
+                              <Shield className="h-4 w-4 text-green-600" />
+                              Afficher les prix CNSS
+                            </Label>
+                            <p className="text-sm text-slate-600 mt-1">
+                              Afficher les prix avec et sans CNSS pour que les patients puissent choisir
+                            </p>
+                          </div>
+                          <Switch
+                            id="show-cnss-prices"
+                            checked={bookingSettings.showCNSSPrices}
+                            onCheckedChange={(checked) => 
+                              setBookingSettings(prev => ({ ...prev, showCNSSPrices: checked }))
+                            }
+                            className="data-[state=checked]:bg-green-500"
+                          />
+                        </div>
+                      </Card>
+                    )}
+
+                    {/* Require CNSS Selection */}
+                    {bookingSettings.showPrices && bookingSettings.showCNSSPrices && (
+                      <Card className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 pr-4">
+                            <Label htmlFor="require-cnss" className="text-base font-semibold text-slate-900 cursor-pointer flex items-center gap-2">
+                              <Star className="h-4 w-4 text-blue-600" />
+                              Obliger le choix CNSS
+                            </Label>
+                            <p className="text-sm text-slate-600 mt-1">
+                              Forcer le patient à spécifier s'il utilise la CNSS ou non
+                            </p>
+                          </div>
+                          <Switch
+                            id="require-cnss"
+                            checked={bookingSettings.requireCNSSSelection}
+                            onCheckedChange={(checked) => 
+                              setBookingSettings(prev => ({ ...prev, requireCNSSSelection: checked }))
+                            }
+                            className="data-[state=checked]:bg-blue-500"
+                          />
+                        </div>
+                      </Card>
+                    )}
+                  </div>
+                </div>
+
+                {/* Preview Section */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-2">
+                    Aperçu pour les patients
+                  </h3>
+                  
+                  <Card className="border-2 border-dashed border-slate-200 rounded-xl p-6 bg-slate-50">
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-slate-900">Consultation initiale</h4>
+                      <p className="text-sm text-slate-600">Première consultation avec examen clinique complet</p>
+                      
+                      {bookingSettings.showPrices ? (
+                        <div className="flex items-center gap-4">
+                          {bookingSettings.showCNSSPrices ? (
+                            <>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-slate-600">Sans CNSS:</span>
+                                <span className="font-bold text-slate-900">200 MAD</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Shield className="h-4 w-4 text-green-600" />
+                                <span className="text-sm text-slate-600">Avec CNSS:</span>
+                                <span className="font-bold text-green-700">150 MAD</span>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-slate-600">Prix:</span>
+                              <span className="font-bold text-slate-900">200 MAD</span>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-slate-500 italic">
+                          Prix sur demande
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end pt-6 border-t border-slate-100">
+                  <Button 
+                    onClick={() => {
+                      setIsSaving(true);
+                      // Simulate save
+                      setTimeout(() => {
+                        setIsSaving(false);
+                        toast.success('Paramètres de réservation sauvegardés');
+                      }, 1000);
+                    }}
+                    disabled={isSaving}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-lg px-6 py-2 font-semibold shadow-md hover:shadow-lg transition-all"
+                  >
+                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    {isSaving ? 'Sauvegarde...' : 'Enregistrer'}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Notifications */}
         <TabsContent value="notifications" className="space-y-6">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-8 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-8 border-b-0">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold text-slate-900">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
                   <Bell className="h-6 w-6 text-white" />
                 </div>
                 Préférences de notification

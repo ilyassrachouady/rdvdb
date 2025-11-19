@@ -8,11 +8,14 @@
     "build": "tsc -b && vite build",
     "build:production": "NODE_ENV=production npm run lint && npm run build:skip-check",
     "build:skip-check": "vite build",
+    "build:optimized": "node optimize-build.cjs",
     "lint": "eslint . --fix",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "clean": "rm -rf dist .vercel",
-    "start": "npm run preview"
+    "start": "npm run preview",
+    "analyze": "npm run build && npx vite-bundle-analyzer dist",
+    "perf": "node optimize-build.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

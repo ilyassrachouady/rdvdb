@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
@@ -38,6 +39,7 @@ import {
   FileText,
   DollarSign,
   TrendingUp,
+  TrendingDown,
   Download,
   Send,
   Eye,
@@ -50,10 +52,12 @@ import {
   BarChart3,
   Euro,
   CheckCircle2,
+  CheckCircle,
   Clock,
   AlertCircle,
   Search,
   Filter,
+  Calendar,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NewInvoiceForm from '@/components/NewInvoiceForm';
@@ -341,7 +345,7 @@ export default function BillingPage() {
                   4 factures impayées
                 </p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <Clock className="h-7 w-7 text-white" />
               </div>
             </div>
@@ -358,7 +362,7 @@ export default function BillingPage() {
                   Remboursements ce mois
                 </p>
               </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <Shield className="h-7 w-7 text-white" />
               </div>
             </div>
@@ -366,34 +370,8 @@ export default function BillingPage() {
         </Card>
       </div>
 
-      {/* Tabs Section */}
-      <Tabs defaultValue="invoices" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-slate-200/50 h-14">
-          <TabsTrigger 
-            value="invoices" 
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            Factures
-          </TabsTrigger>
-          <TabsTrigger 
-            value="insurance" 
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <Shield className="h-4 w-4 mr-2" />
-            Assurances
-          </TabsTrigger>
-          <TabsTrigger 
-            value="reports" 
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Rapports
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Invoices Tab */}
-        <TabsContent value="invoices" className="space-y-6">
+      {/* Invoices Section */}
+      <div className="space-y-6">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6">
               <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -469,123 +447,7 @@ export default function BillingPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* Insurance Tab */}
-        <TabsContent value="insurance" className="space-y-6">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6">
-              <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-white" />
-                </div>
-                Assurances & Remboursements
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {insurance.map((ins) => (
-                  <Card
-                    key={ins.id}
-                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden group bg-gradient-to-r from-white to-purple-50/30"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div className="flex-1">
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Assureur</p>
-                              <p className="font-bold text-slate-900">{ins.provider}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Police N°</p>
-                              <p className="font-bold text-slate-900">{ins.policyNumber}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Couverture</p>
-                              <p className="font-bold text-slate-900">{ins.coverage}%</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Plafond</p>
-                              <p className="font-bold text-slate-900">{ins.maxAmount} MAD</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="rounded-2xl">
-                            <Calculator className="h-4 w-4 mr-2" />
-                            Calculer
-                          </Button>
-                          <Button size="sm" className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 rounded-2xl">
-                            <Send className="h-4 w-4 mr-2" />
-                            Demande
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Reports Tab */}
-        <TabsContent value="reports" className="space-y-6">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-6">
-              <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl flex items-center justify-center">
-                  <BarChart3 className="h-5 w-5 text-white" />
-                </div>
-                Rapports financiers
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {reports.map((report, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 rounded-2xl p-6"
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-bold text-slate-900">{report.period}</h3>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-4 bg-green-50 rounded-xl">
-                          <p className="text-sm text-slate-600 font-medium">Revenus</p>
-                          <p className="text-2xl font-bold text-green-600">{report.revenue.toLocaleString()} MAD</p>
-                        </div>
-                        <div className="text-center p-4 bg-red-50 rounded-xl">
-                          <p className="text-sm text-slate-600 font-medium">Dépenses</p>
-                          <p className="text-2xl font-bold text-red-600">{report.expenses.toLocaleString()} MAD</p>
-                        </div>
-                      </div>
-                      
-                      <div className="text-center p-4 bg-blue-50 rounded-xl">
-                        <p className="text-sm text-slate-600 font-medium">Bénéfice net</p>
-                        <p className="text-3xl font-bold text-blue-600">{report.profit.toLocaleString()} MAD</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-slate-600">Factures émises</p>
-                          <p className="font-bold text-slate-900">{report.invoiceCount}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-600">Factures payées</p>
-                          <p className="font-bold text-slate-900">{report.paidInvoices}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      </div>
     </div>
   );
 }

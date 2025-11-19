@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { ViewportScaler } from '@/components/ViewportScaler';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import ResponsiveContainer from '@/components/layout/ResponsiveContainer';
 import {
   Sheet,
   SheetContent,
@@ -35,6 +38,7 @@ const navigation = [
   { name: 'Tableau de bord', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Rendez-vous', href: '/dashboard/appointments', icon: Calendar },
   { name: 'Patients', href: '/dashboard/patients', icon: Users },
+  { name: 'Services', href: '/dashboard/services', icon: Stethoscope },
   { name: 'Facturation', href: '/dashboard/billing', icon: CreditCard },
   { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
 ];
@@ -51,10 +55,11 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-teal-50/10 animate-fade-in">
-      {/* Modern Desktop Sidebar */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-        <div className="flex grow flex-col gap-y-6 overflow-y-auto bg-gradient-to-br from-white via-blue-50/30 to-teal-50/20 border-r-0 shadow-xl px-8 py-8">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-teal-50/10">
+        {/* Modern Desktop Sidebar */}
+        <aside className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+          <div className="flex grow flex-col gap-y-4 lg:gap-y-6 overflow-y-auto bg-gradient-to-br from-white via-blue-50/30 to-teal-50/20 border-r-0 shadow-xl px-4 lg:px-6 py-4 lg:py-8">
           <div className="flex h-16 shrink-0 items-center gap-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-lg">
               <Stethoscope className="h-6 w-6 text-white" />
@@ -62,7 +67,7 @@ export default function DashboardLayout() {
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">DentalFlow</h1>
               {isDemo && (
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full mt-1">
+                <Badge className="bg-gradient-to-r from-blue-500 to-teal-500 text-white text-xs font-semibold rounded-full mt-1">
                   Mode démo
                 </Badge>
               )}
@@ -77,7 +82,7 @@ export default function DashboardLayout() {
                     <Link
                       to={item.href}
                       className={cn(
-                        'group flex gap-x-3 rounded-2xl px-4 py-3 text-base font-semibold transition-all duration-300 relative overflow-hidden',
+                        'group flex gap-x-3 rounded-2xl px-4 py-3 text-base font-semibold min-readable transition-all duration-300 relative overflow-hidden',
                         isActive
                           ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-xl transform scale-105 border-l-4 border-white/30'
                           : 'text-slate-700 hover:text-slate-900 hover:bg-white/70 hover:shadow-lg hover:transform hover:scale-102 bg-white/50 backdrop-blur-sm border-l-4 border-transparent hover:border-teal-300'
@@ -174,7 +179,7 @@ export default function DashboardLayout() {
                         to={item.href}
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
-                          'group flex gap-x-3 rounded-xl p-3 text-sm font-semibold leading-6 transition-colors',
+                          'group flex gap-x-3 rounded-xl p-3 text-base font-semibold leading-6 min-readable transition-colors',
                           isActive
                             ? 'bg-teal-50 text-teal-600'
                             : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
@@ -239,12 +244,17 @@ export default function DashboardLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="lg:pl-80">
-        <div className="px-4 py-4 sm:px-6 lg:px-8 xl:px-12">
-          <Outlet />
-        </div>
+      <main className="lg:pl-72">
+        <ViewportScaler>
+          <div className="max-w-screen-2xl mx-auto min-w-[300px] section-padding">
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
+          </div>
+        </ViewportScaler>
       </main>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

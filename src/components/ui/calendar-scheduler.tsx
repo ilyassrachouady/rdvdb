@@ -116,37 +116,37 @@ function CalendarScheduler({
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-3">
       {/* Calendar */}
       <Card className="shadow-lg border-gray-200">
-        <CardContent className="p-6">
+        <CardContent className="p-3">
           {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={handlePrevMonth}
-              className="h-10 w-10 p-0"
+              className="h-8 w-8 p-0"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4" />
             </Button>
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-base font-semibold">
               {format(currentMonth, "MMMM yyyy", { locale: fr })}
             </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleNextMonth}
-              className="h-10 w-10 p-0"
+              className="h-8 w-8 p-0"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Day of Week Headers */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
+          <div className="grid grid-cols-7 gap-1 mb-2">
             {["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"].map(day => (
-              <div key={day} className="text-center text-sm font-semibold text-gray-500 h-10 flex items-center justify-center">
+              <div key={day} className="text-center text-xs font-semibold text-gray-500 h-6 flex items-center justify-center">
                 {day}
               </div>
             ))}
@@ -168,13 +168,13 @@ function CalendarScheduler({
                   onClick={() => handleDateSelect(day)}
                   disabled={!dayHasAvailableSlots || isExternallyDisabled || isPastDate}
                   className={cn(
-                    "h-10 rounded-lg font-medium text-sm transition-all",
+                    "h-8 rounded-lg font-medium text-xs transition-all",
                     isCurrentMonth ? "text-gray-900" : "text-gray-300",
-                    isSelected && "bg-blue-600 text-white shadow-md ring-2 ring-blue-500 ring-offset-2",
-                    !isSelected && dayHasAvailableSlots && "bg-green-100 text-green-900 border-2 border-green-300 hover:bg-green-200 cursor-pointer",
-                    !isSelected && !dayHasAvailableSlots && isCurrentMonth && !isPastDate && !isExternallyDisabled && "bg-red-100 text-red-900 border-2 border-red-300 cursor-not-allowed opacity-60",
-                    (isPastDate || isExternallyDisabled) && !isSelected && "opacity-50 cursor-not-allowed bg-gray-100",
-                    isToday && !isSelected && "ring-2 ring-blue-300",
+                    isSelected && "bg-teal-600 text-white shadow-md ring-2 ring-teal-500 ring-offset-1",
+                    !isSelected && dayHasAvailableSlots && "bg-green-50 text-green-900 border border-green-300 hover:bg-green-100 cursor-pointer",
+                    !isSelected && !dayHasAvailableSlots && isCurrentMonth && !isPastDate && !isExternallyDisabled && "bg-red-50 text-red-900 border border-red-300 cursor-not-allowed opacity-60",
+                    (isPastDate || isExternallyDisabled) && !isSelected && "opacity-50 cursor-not-allowed bg-gray-50",
+                    isToday && !isSelected && "ring-1 ring-teal-300",
                   )}
                 >
                   {format(day, "d")}
